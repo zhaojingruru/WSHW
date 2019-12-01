@@ -121,7 +121,7 @@ class myForm extends React.Component {
                     </RadioGroup>
                 </FormItem>
                 <FormItem wrapperCol={{ span: 6, offset: 3 }} style={{ marginTop: 24 }}>
-                    <Button type="primary" htmlType="submit" onClick={success}>确定</Button>
+                    <Button type="primary" htmlType="submit" onClick={success}>Add</Button>
                     &nbsp;&nbsp;&nbsp;
                     <Button type="ghost" onClick={this.showModal}>点击有惊喜</Button>
                 </FormItem>
