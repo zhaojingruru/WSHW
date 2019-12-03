@@ -1,6 +1,10 @@
 var webpack = require('webpack')
 
 module.exports = {
+    devServer: {
+        host:'127.0.0.1',
+        port:8088
+    },
     entry: {
         main: './src/main.js'
         //vendors: ['react','jquery']

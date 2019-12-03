@@ -25,9 +25,11 @@ import './main.css'
 // 引入单个页面（包括嵌套的子页面）
 import myTable from './components/table.js'
 import myForm from './components/form.js'
-import myAnimate from './components/animate.js'
+import checkAccess from './components/checkAccess.js'
+import myAnimate from './components/checkAccess.js'
 import myCalendar from './components/calendar.js'
 import myCard from './components/fetch.js'
+import animate from "./components/checkAccess";
 
 const ACTIVE = { color: 'red' }
 
@@ -65,12 +67,12 @@ class Sider extends React.Component {
                     <Menu theme="dark"
                         onClick={this.handleClick}
                         style={{ width: 185 }}
-                        defaultOpenKeys={['sub1', 'sub2']}
                         defaultSelectedKeys={[this.state.current]}
                         mode="inline"
                     >
-                            <Menu.Item key="1"><Link to="/myTable">Users</Link></Menu.Item>
-                            <Menu.Item key="2"><Link to="/myForm">Add User</Link></Menu.Item>
+                        <Menu.Item key="1"><Link to="/myTable">Users</Link></Menu.Item>
+                        <Menu.Item key="2"><Link to="/myForm">Add User</Link></Menu.Item>
+                        <Menu.Item key="3"><Link to="/checkAccess">Check Access</Link></Menu.Item>
                     </Menu>
                 </div>
                 <div id="rightWrap">
@@ -96,6 +98,7 @@ render((
             <IndexRoute path="myTable" component={myTable} />
             <Route path="myTable" component={myTable} />
             <Route path="myForm" component={myForm} />
+            <Route path="checkAccess" component={animate} />
         </Route>
     </Router>
 ), document.getElementById('app'));

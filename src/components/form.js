@@ -54,50 +54,38 @@ class myForm extends React.Component {
             <Form horizontal onSubmit={this.handleSubmit}>
                 <FormItem
                     id="control-input"
-                    label="输入框"
+                    label="Name"
                     {...formItemLayout}
                     required>
-                    <Input id="control-input" placeholder="Please enter..."
+                    <Input id="control-input" placeholder="Please enter your name"
                     {...getFieldProps('userName')} />
                 </FormItem>
-
                 <FormItem
-                    label="日期选择框"
-                    labelCol={{ span: 3 }}
+                    id="phone-input"
+                    label="Phone"
+                    {...formItemLayout}
                     required>
-                    <Col span="2">
-                        <FormItem>
-                            <DatePicker {...getFieldProps('startDate')} />
-                        </FormItem>
-                    </Col>
-                    <Col span="1">
-                        <p className="ant-form-split">-</p>
-                    </Col>
-                    <Col span="2">
-                        <FormItem>
-                            <DatePicker {...getFieldProps('endDate')} />
-                        </FormItem>
-                    </Col>
+                    <Input id="control-input" placeholder="Please enter your phone"
+                           {...getFieldProps('phone')} />
                 </FormItem>
 
                 <FormItem
                     id="control-textarea"
-                    label="文本域"
+                    label="Address"
                     {...formItemLayout}>
-                    <Input type="textarea" id="control-textarea" rows="3" 
+                    <Input type="textarea" id="control-textarea" rows="3"
                     {...getFieldProps('content')} />
                 </FormItem>
 
                 <FormItem
                     id="select"
-                    label="Select 选择器"
+                    label="Gender"
+                    required
                     {...formItemLayout}>
                     <Select id="select" size="large" defaultValue="lucy" style={{ width: 200 }} onChange={this.handleSelectChange}
                         {...getFieldProps('people')}>
-                        <Option value="jack">jack</Option>
-                        <Option value="lucy">lucy</Option>
-                        <Option value="disabled" disabled>disabled</Option>
-                        <Option value="yiminghe">yiminghe</Option>
+                        <Option value="female">female</Option>
+                        <Option value="male">male</Option>
                     </Select>
                 </FormItem>
 
