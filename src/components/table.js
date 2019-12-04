@@ -1,11 +1,11 @@
 import React from 'react'
-import { Form, Input, Select, Checkbox, Icon, Radio, Table, Divider, Modal, Button } from 'antd'
+import { Form, Input, Select, Checkbox, Icon, Radio, Table, Divider, Modal, Button, message } from 'antd'
 
 const FormItem = Form.Item
 const Option = Select.Option
 const RadioGroup = Radio.Group
 
-export default class myTable extends React.Component {
+class myTable extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -18,17 +18,18 @@ export default class myTable extends React.Component {
 
     componentDidMount() {
         const that = this;
-        fetch('/ResidentialAccessControl/admin/user')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (myJson) {
-                that.onFetchData(myJson);
-            });
+        this.fetchData('successfully loaded')
     }
 
-    onFetchData = (myJson) => {
-        this.setState({ data: myJson.data })
+    fetchData = (msg) => {
+        fetch('/ResidentialAccessControl/admin/user')
+            .then((response) => {
+                return response.json();
+            })
+            .then((myJson) => {
+                this.setState({ data: myJson.data })
+                message.success(msg);
+            });
     }
 
     // checkbox状态
@@ -39,17 +40,50 @@ export default class myTable extends React.Component {
 
     // 显示弹框
     showEditModal = (event, record) => {
-        console.log(record);
+        console.log(record)
         this.setState({ curUser: record, editVisible: true })
     }
 
+    handleDelete = (event, record) => {
+        fetch('/ResidentialAccessControl/admin/user/' + record.id, {
+            method: 'DELETE'
+        }).then(()=>{
+            this.fetchData('Successfully Deleted')});
+    }
 
     // 隐藏弹框
     hideEditModal = () => {
         this.setState({ editVisible: false })
     }
 
+    handleOk = () => {
+        message.success('Successfully Modified');
+        this.hideEditModal();
+        const uploadObj = {};
+        uploadObj['id'] = this.state.curUser['id'];
+        uploadObj['name'] = this.state.curUser['name'];
+        uploadObj['phone'] = this.state.curUser['phone'];
+        uploadObj['email'] = this.state.curUser['email'];
+        uploadObj['gender'] = this.state.curUser['gender'];
+
+        fetch('/ResidentialAccessControl/admin/user', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(uploadObj)
+        }).then(() => {
+            this.fetchData("Successfully edited")
+        })
+    }
+
+    handleInputChange = (event, property) => {
+        this.setState({curUser: {...this.state.curUser, [property]: event.target.value}})
+    }
+
     render() {
+        const { getFieldProps } = this.props.form
+
         const columns = [
             {
                 title: 'ID',
@@ -75,24 +109,19 @@ export default class myTable extends React.Component {
                 title: 'Email',
                 width: '15%',
                 dataIndex: 'email'
-            },
-            {
-                title: 'Address',
-                width: '20%',
-                dataIndex: 'address'
             }, {
                 title: 'CardKey',
-                width: '10%',
+                width: '15%',
                 dataIndex: 'cardkey',
             }, {
                 title: 'Action',
-                width: '10%',
+                width: '15%',
                 dataIndex: 'action',
                 render: (text, record) => {
                     return (<span>
                         <Button type="ghost" onClick={(e) => {this.showEditModal(e, record)}}>Edit</Button>
                         <Divider type="vertical" />
-                        <a>Delete</a>
+                        <Button type="ghost" onClick={(e) => {this.handleDelete(e, record)}}>Delete</Button>
                     </span>
                     )
                 }
@@ -125,7 +154,7 @@ export default class myTable extends React.Component {
         return (
             <div>
                 <Table columns={columns} dataSource={this.state.data} bordered pagination={pagination} />
-                <Modal title="Edit User" visible={this.state.editVisible} onOk={this.hideEditModal} onCancel={this.hideEditModal}>
+                <Modal title="Edit User" visible={this.state.editVisible} onOk={this.handleOk} onCancel={this.hideEditModal}>
 
                     <Form horizontal onSubmit={this.handleSubmit}>
                         <FormItem
@@ -134,7 +163,7 @@ export default class myTable extends React.Component {
                             {...formItemLayout}
                             required>
                             <Input id="control-input" placeholder="Please enter your name"
-                                value={this.state.curUser.name}  />
+                                {...getFieldProps('name')} value={this.state.curUser.name} onChange={(event) => {this.handleInputChange(event, 'name')}}/>
                         </FormItem>
                         <FormItem
                             id="phone-input"
@@ -142,7 +171,7 @@ export default class myTable extends React.Component {
                             {...formItemLayout}
                             required>
                             <Input id="control-input" placeholder="Please enter your phone"
-                                value={this.state.curUser.phone}   />
+                                {...getFieldProps('phone')} value={this.state.curUser.phone}  onChange={(event) => {this.handleInputChange(event, 'phone')}}/>
                         </FormItem>
 
                         <FormItem
@@ -150,7 +179,7 @@ export default class myTable extends React.Component {
                             label="Email"
                             {...formItemLayout}>
                             <Input type="textarea" id="control-textarea" rows="3"
-                               value={this.state.curUser.email}   />
+                               {...getFieldProps('email')} value={this.state.curUser.email}  onChange={(event) => {this.handleInputChange(event, 'email')}}/>
                         </FormItem>
 
                         <FormItem
@@ -158,8 +187,12 @@ export default class myTable extends React.Component {
                             label="Gender"
                             required
                             {...formItemLayout}>
-                            <Select id="select" size="large" defaultValue={this.state.curUser.gender} style={{ width: 200 }} onChange={this.handleSelectChange}
-                                >
+                            <Select 
+                            id="select" 
+                            defaultValue={this.state.curUser.gender} 
+                            style={{ width: 200 }}  
+                            onChange={(event) => {this.handleInputChange(event, 'gender')}}
+                                {...getFieldProps('gender')}>
                                 <Option value="female">female</Option>
                                 <Option value="male">male</Option>
                             </Select>
@@ -170,3 +203,4 @@ export default class myTable extends React.Component {
         )
     }
 }
+export default Form.create()(myTable)
