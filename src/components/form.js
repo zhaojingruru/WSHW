@@ -21,15 +21,15 @@ class myForm extends React.Component {
     // 提交表单
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log('收到表单值：', JSON.stringify(this.props.form.getFieldsValue()))
-        this.props.form.resetFields()
+        const postData = JSON.stringify(this.props.form.getFieldsValue());
         fetch('/ResidentialAccessControl/admin/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(this.props.form.getFieldsValue())
+            body: postData
         });
+        this.props.form.resetFields()
     }
 
 
@@ -53,7 +53,7 @@ class myForm extends React.Component {
         }
 
         const success = function () {
-            message.success('操作成功!');
+            message.success('Successfully added!');
         }
 
         return (

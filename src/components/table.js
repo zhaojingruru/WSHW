@@ -12,7 +12,9 @@ class myTable extends React.Component {
             tDate: [],
             selectedRowKeys: [],
             editVisible: false,
-            curUser: {}
+            curUser: {},
+            addCardVisible: false,
+            newCardKey: ""
         }
     }
 
@@ -37,13 +39,6 @@ class myTable extends React.Component {
         console.log('selectedRowKeys changed: ', selectedRowKeys)
         this.setState({ selectedRowKeys })
     }
-
-    // 显示弹框
-    showEditModal = (event, record) => {
-        console.log(record)
-        this.setState({ curUser: record, editVisible: true })
-    }
-
     handleDelete = (event, record) => {
         fetch('/ResidentialAccessControl/admin/user/' + record.id, {
             method: 'DELETE'
@@ -51,10 +46,47 @@ class myTable extends React.Component {
             this.fetchData('Successfully Deleted')});
     }
 
+    handleReportLoss = (event, record) => {
+        if (record.cardkey == null) {
+            message.error("The user do not have any card.")
+        } else {
+            fetch('/ResidentialAccessControl/admin/card/' + record.cardkey + '/' + record.id, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(() => {
+                this.fetchData("Successfully report the loss")
+            })
+        }
+    }
+
+
+    // 显示弹框
+    showEditModal = (event, record) => {
+        console.log(record)
+        this.setState({ curUser: record, editVisible: true })
+    }
+
+    showAddCardModal = (event, record) => {
+        
+        if (record.cardkey != null) {
+            message.error("The user already has a card")
+        } else {
+            this.setState({ curUser: record, addCardVisible: true })
+        }
+    }
+
     // 隐藏弹框
     hideEditModal = () => {
         this.setState({ editVisible: false })
     }
+
+    // 隐藏弹框
+    hideAddCardModal = () => {
+        this.setState({ addCardVisible: false })
+    }
+
 
     handleOk = () => {
         message.success('Successfully Modified');
@@ -79,6 +111,27 @@ class myTable extends React.Component {
 
     handleInputChange = (event, property) => {
         this.setState({curUser: {...this.state.curUser, [property]: event.target.value}})
+    }
+
+    handleCardKeyChange = (event, property) => {
+        this.setState({newCardKey: event.target.value})
+    }
+
+    handleAddCardOk = (event, property) => {
+        fetch('/ResidentialAccessControl/admin/card', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "cardkey": this.state.newCardKey,
+                "userid" : this.state.curUser.id
+            })
+        }).then(() => {
+            this.setState({newCardKey: ""})
+            this.fetchData("Successfully add cardkey");
+        })
+        this.hideAddCardModal();
     }
 
     render() {
@@ -107,21 +160,25 @@ class myTable extends React.Component {
             },
             {
                 title: 'Email',
-                width: '15%',
+                width: '10%',
                 dataIndex: 'email'
             }, {
                 title: 'CardKey',
-                width: '15%',
+                width: '10%',
                 dataIndex: 'cardkey',
             }, {
                 title: 'Action',
-                width: '15%',
+                width: '30%',
                 dataIndex: 'action',
                 render: (text, record) => {
                     return (<span>
                         <Button type="ghost" onClick={(e) => {this.showEditModal(e, record)}}>Edit</Button>
                         <Divider type="vertical" />
                         <Button type="ghost" onClick={(e) => {this.handleDelete(e, record)}}>Delete</Button>
+                        <Divider type="vertical" />
+                        <Button type="ghost" onClick={(e) => {this.handleReportLoss(e, record)}} style={{display:record.cardkey!=null}}>Report Loss</Button>
+                        <Divider type="vertical" />
+                        <Button type="ghost" onClick={(e) => {this.showAddCardModal(e, record)}} style={{display:record.cardkey==null}}>Add card</Button>
                     </span>
                     )
                 }
@@ -189,6 +246,7 @@ class myTable extends React.Component {
                             {...formItemLayout}>
                             <Select 
                             id="select" 
+                            key={JSON.stringify(this.state.curUser)} 
                             defaultValue={this.state.curUser.gender} 
                             style={{ width: 200 }}  
                             onChange={(event) => {this.handleInputChange(event, 'gender')}}
@@ -198,6 +256,12 @@ class myTable extends React.Component {
                             </Select>
                         </FormItem>
                     </Form>
+                </Modal>
+                <Modal title="Add card" visible={this.state.addCardVisible} onOk={this.handleAddCardOk} onCancel={this.hideAddCardModal}>
+                <Input id="control-input" 
+                        placeholder="Please enter the new cardkey"
+                        value={this.state.newCardKey} 
+                        onChange={(event) => {this.handleCardKeyChange(event)}}/>
                 </Modal>
             </div>
         )
