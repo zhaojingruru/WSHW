@@ -21,9 +21,15 @@ class myForm extends React.Component {
     // 提交表单
     handleSubmit = (e) => {
         e.preventDefault()
-        console.log('收到表单值：', this.props.form.getFieldsValue())
-
+        console.log('收到表单值：', JSON.stringify(this.props.form.getFieldsValue()))
         this.props.form.resetFields()
+        fetch('/ResidentialAccessControl/admin/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.props.form.getFieldsValue())
+        });
     }
 
 
@@ -58,7 +64,7 @@ class myForm extends React.Component {
                     {...formItemLayout}
                     required>
                     <Input id="control-input" placeholder="Please enter your name"
-                    {...getFieldProps('userName')} />
+                    {...getFieldProps('name')} />
                 </FormItem>
                 <FormItem
                     id="phone-input"
@@ -71,51 +77,47 @@ class myForm extends React.Component {
 
                 <FormItem
                     id="control-textarea"
-                    label="Address"
+                    label="email"
                     {...formItemLayout}>
                     <Input type="textarea" id="control-textarea" rows="3"
-                    {...getFieldProps('content')} />
+                    {...getFieldProps('email')} />
                 </FormItem>
 
                 <FormItem
                     id="select"
-                    label="Gender"
+                    label="gender"
                     required
                     {...formItemLayout}>
                     <Select id="select" size="large" defaultValue="lucy" style={{ width: 200 }} onChange={this.handleSelectChange}
-                        {...getFieldProps('people')}>
+                        {...getFieldProps('gender')}>
                         <Option value="female">female</Option>
                         <Option value="male">male</Option>
                     </Select>
                 </FormItem>
 
-                <FormItem
-                    label="Checkbox 多选框"
-                    {...formItemLayout}
-                >
-                    <Checkbox className="ant-checkbox-inline" {...getFieldProps('checkboxItem1')}>选项一</Checkbox>
-                    <Checkbox className="ant-checkbox-inline" {...getFieldProps('checkboxItem2')}>选项二</Checkbox>
-                    <Checkbox className="ant-checkbox-inline" {...getFieldProps('checkboxItem3')}>选项三</Checkbox>
-                </FormItem>
+                {/*<FormItem*/}
+                {/*    label="Checkbox 多选框"*/}
+                {/*    {...formItemLayout}*/}
+                {/*>*/}
+                {/*    <Checkbox className="ant-checkbox-inline" {...getFieldProps('checkboxItem1')}>选项一</Checkbox>*/}
+                {/*    <Checkbox className="ant-checkbox-inline" {...getFieldProps('checkboxItem2')}>选项二</Checkbox>*/}
+                {/*    <Checkbox className="ant-checkbox-inline" {...getFieldProps('checkboxItem3')}>选项三</Checkbox>*/}
+                {/*</FormItem>*/}
 
-                <FormItem
-                    label="Radio 单选框"
-                    {...formItemLayout} >
-                    <RadioGroup defaultValue="b" {...getFieldProps('radioItem')}>
-                        <Radio value="a">A</Radio>
-                        <Radio value="b">B</Radio>
-                        <Radio value="c">C</Radio>
-                        <Radio value="d">D</Radio>
-                    </RadioGroup>
-                </FormItem>
+                {/*<FormItem*/}
+                {/*    label="Radio 单选框"*/}
+                {/*    {...formItemLayout} >*/}
+                {/*    <RadioGroup defaultValue="b" {...getFieldProps('radioItem')}>*/}
+                {/*        <Radio value="a">A</Radio>*/}
+                {/*        <Radio value="b">B</Radio>*/}
+                {/*        <Radio value="c">C</Radio>*/}
+                {/*        <Radio value="d">D</Radio>*/}
+                {/*    </RadioGroup>*/}
+                {/*</FormItem>*/}
                 <FormItem wrapperCol={{ span: 6, offset: 3 }} style={{ marginTop: 24 }}>
                     <Button type="primary" htmlType="submit" onClick={success}>Add</Button>
                     &nbsp;&nbsp;&nbsp;
-                    <Button type="ghost" onClick={this.showModal}>点击有惊喜</Button>
                 </FormItem>
-                <Modal title="登录" visible={this.state.visible} onOk={this.hideModal} onCancel={this.hideModal}>
-                    这是一个modal
-                </Modal>
             </Form>
         )
     }
