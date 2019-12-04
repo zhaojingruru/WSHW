@@ -85,3 +85,51 @@
 .doclist {
     line-height: 40px;
 }
+
+.title {
+    font-size: x-large;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.checkBtn {
+    margin-top: 20px;
+}
+
+.checkInput {
+    display: block!important;
+}
+.login {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: #ffffff;
+}
+.user-name {
+    position: absolute!important;
+    left: 40%;
+    top: 30%;
+}
+
+.password {
+    position: absolute!important;
+    left: 40%;
+    top: 40%;
+}
+
+.login-btn {
+    position: absolute!important;
+    left: 42%;
+    top: 50%;
+}
+.bg_color {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    filter: blur(8px);
+}

@@ -1,8 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Map, GoogleApiWrapper } from 'google-maps-react';
 import { Menu, Dropdown, Icon, message,Input,Button} from 'antd';
+import './../main.css';
 
 // 结尾组件
-export default class myAnimate extends React.Component {
+class myAnimate extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -55,6 +57,11 @@ export default class myAnimate extends React.Component {
     }
 
     render() {
+        const mapStyles = {
+            width: '500px',
+            height: '500px',
+            margin: '20px',
+        };
         const onClick = (e) => {
             message.info(`You chose ${e.item.props.name}`);
             this.setState({area: e.key})
@@ -71,11 +78,19 @@ export default class myAnimate extends React.Component {
         return (
             <div>
             <Dropdown overlay={menu}>
-                <a className="ant-dropdown-link">Areas<Icon type="down" /></a>
+                <a className="ant-dropdown-link title">Areas<Icon type="down" /></a>
             </Dropdown>
-            <Input placeholder="Enter your card key" onChange={this.changeKey} value={this.state.cardKey}/>
-            <Button type="primary" onClick={this.clickBtn}>Check</Button>
-            </div>
+            <Input placeholder="Enter your card key" onChange={this.changeKey} value={this.state.cardKey} style={{ width: 200 }} className="checkInput"/>
+            <Button type="primary" onClick={this.clickBtn} className="checkBtn">Check</Button>
+                <Map
+                    google={this.props.google}
+                    zoom={8}
+                    style={mapStyles}
+                    initialCenter={{ lat: 47.444, lng: -122.176}}
+                />            </div>
         )
     }       
 }
+export default GoogleApiWrapper({
+    apiKey: 'AIzaSyCVABrP0U723hgb0pnHZk1z85S5RiQlPVQ'
+})(myAnimate);
