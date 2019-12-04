@@ -30,6 +30,7 @@ import myAnimate from './components/checkAccess.js'
 import myCalendar from './components/calendar.js'
 import myCard from './components/fetch.js'
 import animate from "./components/checkAccess";
+import login from "./components/login";
 
 const ACTIVE = { color: 'red' }
 
@@ -95,7 +96,7 @@ class Sider extends React.Component {
 render((
     <Router history={hashHistory} >
         <Route path="/" component={Sider}>
-            <IndexRoute path="myTable" component={myTable} />
+            <IndexRoute path="login" component={login}/>
             <Route path="myTable" component={myTable} />
             <Route path="myForm" component={myForm} />
             <Route path="checkAccess" component={animate} />
