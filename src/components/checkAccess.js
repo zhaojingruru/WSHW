@@ -7,20 +7,20 @@ export default class myAnimate extends React.Component {
         super(props)   
     }
     state = {
-        area: ''
+        area: 1
     }
 
     clickBtn = () => {
-        // fetch('http://localhost:8080/ResidentialAccessControl/admin/card/1aazxcnmo/'+)this.state.area
-        //     .then(function(response) {
-        //         return response.json();
-        //     })
-        //     .then(function(myJson) {
-        //         console.log(myJson);
-        //         message.info(myJson);
-        //     });
+        fetch('/ResidentialAccessControl/admin/card/1aazxcnmo/'+this.state.area)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(myJson) {
+                console.log(myJson);
+                message.info(myJson);
+            });
 
-            message.info(`you have the access to area ${this.state.area}`);
+            // message.info(`you have the access to area ${this.state.area}`);
 
     }
 

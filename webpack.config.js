@@ -3,7 +3,14 @@ var webpack = require('webpack')
 module.exports = {
     devServer: {
         host:'127.0.0.1',
-        port:8088
+        port:8088,
+        proxy: {
+            '/ResidentialAccessControl': {
+                target: 'http://localhost:8080',
+                changeOrigin: true,     // target是域名的话，需要这个参数，
+                secure: false,          // 设置支持https协议的代理
+            }
+        }
     },
     entry: {
         main: './src/main.js'
