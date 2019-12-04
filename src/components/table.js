@@ -6,29 +6,24 @@ export default class myTable extends React.Component {
         super(props)
         this.state = {
             tDate: [],
-            selectedRowKeys: []
+            selectedRowKeys: [],
         }
     }
 
     componentDidMount() {
-        const data = []
-
-        for (let i = 0; i < 46; i++) {
-            data.push({
-                key: i,
-                id: i,
-                name: `作业${i}`,
-                gender: 'female',
-                address: `UWT${i}号`,
-                cardkey: i,
+        const that = this;
+        fetch('/ResidentialAccessControl/admin/user')
+            .then(function (response) {
+                return response.json();
             })
-        }
+            .then(function (myJson) {
+                console.log(myJson)
+                that.onFetchData(myJson);
+            });
+    } 
 
-        this.setState({
-            data,
-        },()=> {
-            console.log(this.state.data)
-        })
+    onFetchData = (myJson) => {
+        this.setState({data: myJson.data})
     }
 
     // checkbox状态
