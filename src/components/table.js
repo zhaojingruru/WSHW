@@ -24,7 +24,7 @@ class myTable extends React.Component {
     }
 
     fetchData = (msg) => {
-        fetch('/ResidentialAccessControl/admin/user')
+        fetch('/ResidentialAccessControl/admin/resident')
             .then((response) => {
                 return response.json();
             })
@@ -40,7 +40,7 @@ class myTable extends React.Component {
         this.setState({ selectedRowKeys })
     }
     handleDelete = (event, record) => {
-        fetch('/ResidentialAccessControl/admin/user/' + record.id, {
+        fetch('/ResidentialAccessControl/admin/resident/' + record.id, {
             method: 'DELETE'
         }).then(()=>{
             this.fetchData('Successfully Deleted')});
@@ -98,7 +98,7 @@ class myTable extends React.Component {
         uploadObj['email'] = this.state.curUser['email'];
         uploadObj['gender'] = this.state.curUser['gender'];
 
-        fetch('/ResidentialAccessControl/admin/user', {
+        fetch('/ResidentialAccessControl/admin/resident', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -139,19 +139,19 @@ class myTable extends React.Component {
 
         const columns = [
             {
-                title: 'ID',
+                title: 'RID',
                 width: '5%',
-                dataIndex: 'id'
+                dataIndex: "RID"
+            },
+            {
+                title: 'AccountID',
+                width: '5%',
+                dataIndex: "AccountID"
             },
             {
                 title: 'Name',
                 width: '10%',
                 dataIndex: 'name'
-            },
-            {
-                title: 'Gender',
-                width: '8%',
-                dataIndex: 'gender'
             },
             {
                 title: 'Phone',
