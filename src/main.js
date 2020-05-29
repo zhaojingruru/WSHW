@@ -25,6 +25,10 @@ import './main.css'
 // 引入单个页面（包括嵌套的子页面）
 import myTable from './components/table.js'
 import myForm from './components/form.js'
+import Card from './components/card.js'
+import Apartments from './components/apt.js'
+import Account from './components/Account.js'
+import Manager from './components/Manager.js'
 import checkAccess from './components/checkAccess.js'
 import myAnimate from './components/checkAccess.js'
 import myCalendar from './components/calendar.js'
@@ -74,6 +78,12 @@ class Sider extends React.Component {
                         <Menu.Item key="1"><Link to="/myTable">Users</Link></Menu.Item>
                         <Menu.Item key="2"><Link to="/myForm">Add User</Link></Menu.Item>
                         <Menu.Item key="3"><Link to="/checkAccess">Check Access</Link></Menu.Item>
+                        <Menu.Item key="4"><Link to="/Apartments">Apartments</Link></Menu.Item>
+                        <Menu.Item key="5"><Link to="/Card">Card</Link></Menu.Item>
+                        <Menu.Item key="6"><Link to="/Manager">Manager</Link></Menu.Item>
+                        <Menu.Item key="7"><Link to="/Account">Account</Link></Menu.Item>
+
+
                     </Menu>
                 </div>
                 <div id="rightWrap">
@@ -98,8 +108,13 @@ render((
         <Route path="/" component={Sider}>
             <IndexRoute path="login" component={login}/>
             <Route path="myTable" component={myTable} />
+            <Route path="Apartments" component={Apartments} />
+            <Route path="Card" component={Card} />
+            <Route path="Manager" component={Manager} />
             <Route path="myForm" component={myForm} />
             <Route path="checkAccess" component={animate} />
+            <Route path="Account" component={Account} />
+
         </Route>
     </Router>
 ), document.getElementById('app'));
